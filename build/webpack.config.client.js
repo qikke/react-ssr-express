@@ -5,6 +5,7 @@ const HTMLPlugin = require('html-webpack-plugin')
 const isDev = process.env.NODE_ENV === 'development'
 
 const config = {
+  mode: 'production',
   entry: {
     app: join(__dirname, '../client/app.js')
   },
@@ -16,6 +17,14 @@ const config = {
   },
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.(js|jsx)$/,
+        loader: 'eslint-loader',
+        exclude: [
+          join(__dirname, '../node_modules')
+        ]
+      },
       {
         test: /\.(jsx)$/,
         loader: 'babel-loader'
@@ -38,6 +47,7 @@ const config = {
 
 // localhost:8888/filename 可以访问到dist目录下的文件
 if (isDev) {
+  config.mode = 'development'
   config.entry = {
     app: [
       'react-hot-loader/patch',
@@ -58,6 +68,13 @@ if (isDev) {
     historyApiFallback: {
       index: '/public/index.html'
     }
+    // proxy: {
+    //   '**': {
+    //     target: 'http://localhost:8099',
+    //     secure: false,
+    //     changeOrigin: true
+    //   }
+    // }
   }
   config.plugins.push(new webpack.HotModuleReplacementPlugin())
 }

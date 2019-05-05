@@ -17,9 +17,24 @@ const getTemplate = () => {
   })
 }
 
+// const NativeModule = require('module')
+// const vm = require('vm')
+
+// const getModuleFromString = (bundle, filename) => {
+//   const m = { exports: {} }
+//   const wrapper = NativeModule.wrap(bundle)
+//   const script = new vm.Script(wrapper, {
+//     filename: filename,
+//     displayErrors: true,
+//   })
+//   const result = script.runInThisContext()
+//   result.call(m.exports, m.exports, require, m)
+//   return m
+// }
+
 const Module = module.constructor
 
-const mfs = new MemoryFs
+const mfs = new MemoryFs()
 const serverComplier = webpack(serverConfig)
 serverComplier.outputFileSystem = mfs
 let serverBundle
@@ -35,20 +50,25 @@ serverComplier.watch({}, (err, stats) => {
     serverConfig.output.filename
   )
   const bundle = mfs.readFileSync(bundlePath, 'utf-8')
+
   const m = new Module()
   m._compile(bundle, 'server-entry.js')
   serverBundle = m.exports.default
-})
 
+  // const m = getModuleFromString(bundle, 'server-entry.js')
+  // serverBundle = m.exports
+})
 
 module.exports = function (app) {
   app.use('/public', proxy({
-    target: 'http://localhost:8888'
+    target: 'http://localhost:8888',
+    ws: true
   }))
+
   app.get('*', function (req, res) {
     getTemplate().then(template => {
       const content = ReactDomServer.renderToString(serverBundle)
       res.send(template.replace('<!-- app -->', content))
     })
   })
-} 
+}
