@@ -8,7 +8,7 @@
     "build:server": "webpack --config build/webpack.config.server.js",
     "build": "npm run clear && npm run build:client && npm run build:server",
     "clear": "rimraf dist",
-    "dev:server": "cross-env NODE_ENV=development node server/server.js",
+    "dev:server": "nodemon server/server.js",
     "dev:client": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.config.client.js",
     "lint": "eslint --ext .js --ext .jsx client/",
     "precommit": "npm run lint"
@@ -51,6 +51,7 @@
     "http-proxy-middleware": "^0.17.4",
     "husky": "^2.2.0",
     "memory-fs": "^0.4.1",
+    "nodemon": "^1.19.0",
     "react-hot-loader": "^4.5.3",
     "rimraf": "^2.6.3",
     "webpack": "^4.30.0",
