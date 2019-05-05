@@ -1,49 +1,26 @@
 const { join } = require('path')
 const webpack = require('webpack')
 const HTMLPlugin = require('html-webpack-plugin')
+const webpackMerge = require('webpack-merge')
+const baseConfig = require('./webpack.base')
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const config = {
+const config = webpackMerge(baseConfig, {
   mode: 'production',
   entry: {
     app: join(__dirname, '../client/app.js')
   },
   output: {
-    filename: '[name].[hash].js',
-    path: join(__dirname, '../dist'),
-    // 静态资源前缀
-    publicPath: '/public/'
+    filename: '[name].[hash].js'
   },
-  module: {
-    rules: [
-      {
-        enforce: 'pre',
-        test: /\.(js|jsx)$/,
-        loader: 'eslint-loader',
-        exclude: [
-          join(__dirname, '../node_modules')
-        ]
-      },
-      {
-        test: /\.(jsx)$/,
-        loader: 'babel-loader'
-      },
-      {
-        test: /\.(js)$/,
-        loader: 'babel-loader',
-        exclude: [
-          join(__dirname, '../node_modules')
-        ]
-      }
-    ]
-  },
+
   plugins: [
     new HTMLPlugin({
       template: join(__dirname, '../client/template.html')
     })
   ]
-}
+})
 
 // localhost:8888/filename 可以访问到dist目录下的文件
 if (isDev) {
