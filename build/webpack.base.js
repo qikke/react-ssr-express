@@ -6,6 +6,9 @@ module.exports = {
     // 静态资源前缀
     publicPath: '/public/'
   },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   module: {
     rules: [
       {

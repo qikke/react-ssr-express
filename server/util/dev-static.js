@@ -17,21 +17,6 @@ const getTemplate = () => {
   })
 }
 
-// const NativeModule = require('module')
-// const vm = require('vm')
-
-// const getModuleFromString = (bundle, filename) => {
-//   const m = { exports: {} }
-//   const wrapper = NativeModule.wrap(bundle)
-//   const script = new vm.Script(wrapper, {
-//     filename: filename,
-//     displayErrors: true,
-//   })
-//   const result = script.runInThisContext()
-//   result.call(m.exports, m.exports, require, m)
-//   return m
-// }
-
 const Module = module.constructor
 
 const mfs = new MemoryFs()
@@ -54,9 +39,6 @@ serverComplier.watch({}, (err, stats) => {
   const m = new Module()
   m._compile(bundle, 'server-entry.js')
   serverBundle = m.exports.default
-
-  // const m = getModuleFromString(bundle, 'server-entry.js')
-  // serverBundle = m.exports
 })
 
 module.exports = function (app) {

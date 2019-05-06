@@ -1,11 +1,24 @@
 const express = require('express')
 const favicon = require('serve-favicon')
+const bodyParser = require('body-parser')
+const seesion = require('react-dom/server')
 const ReactSSR = require('react-dom/server')
 const fs = require('fs')
 const { join } = require('path')
 
 const isDev = process.env.NODE_ENV === 'development'
 const app = express()
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(seesion({
+  maxAge: 10 * 60 * 1000,
+  name: 'tid',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'react cnode class'
+}))
 
 app.use(favicon(join(__dirname, '../favicon.ico')))
 
