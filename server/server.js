@@ -30,8 +30,6 @@ if (!isDev) {
   const template = fs.readFileSync(join(__dirname, '../dist/server.ejs'), 'utf8')
   app.use('/public', express.static(join(__dirname, '../dist')))
   app.get('*', function (req, res, next) {
-    // const appString = ReactSSR.renderToString(serverEntry)
-    // res.send(template.replace('<!-- app -->', appString))
     serverRender(serverEntry, template, req, res).catch(next)
   })
 } else {
@@ -44,6 +42,8 @@ app.use(function (error, req, res, next) {
   res.status(500).send(error)
 })
 
-app.listen(8099, function () {
+const host = process.env.HOST || '0.0.0.0'
+const port = process.env.PORT || 8099
+app.listen(port, host, function () {
   console.log('server is listening on 8099')
 })

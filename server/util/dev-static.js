@@ -55,7 +55,8 @@ serverCompiler.watch({}, (err, stats) => {
 
 module.exports = function (app) {
   app.use('/public', proxy({
-    target: 'http://localhost:8888'
+    target: 'http://localhost:8888',
+    ws: true
   }))
 
   app.get('*', function (req, res, next) {

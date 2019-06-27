@@ -10,9 +10,9 @@ export default class AppState {
     this.name = name
   }
 
-  @observable count = 0
+  @observable count
 
-  @observable name = 'qikke'
+  @observable name
 
   @computed get msg() {
     return `${this.name} say count is ${this.count}`

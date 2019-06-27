@@ -3,9 +3,11 @@ import {
   observer,
   inject,
 } from 'mobx-react'
+import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import AppState from '../../store/app-state'
+
 
 @inject('appState') @observer
 export default class TopicList extends React.Component {
@@ -20,6 +22,9 @@ export default class TopicList extends React.Component {
           <meta name="description" content="This is description" />
         </Helmet>
         {appState.msg}
+        <Button color="primary">
+          Hello,
+        </Button>
       </div>
     )
   }
